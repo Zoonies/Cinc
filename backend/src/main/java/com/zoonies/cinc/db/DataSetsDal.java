@@ -14,7 +14,7 @@ import com.zoonies.cinc.core.StreamInfo;
  * @author <a href="mailto:pauld@birst.com">Patrick Auld</a>
  * Dec 6, 2014
  */
-public interface DatasetsDal {
+public interface DataSetsDal {
 
   @SqlQuery("SELECT * FROM dev.streams")
   ResultIterator<StreamInfo> getStreams();

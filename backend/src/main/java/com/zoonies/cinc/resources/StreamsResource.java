@@ -29,7 +29,7 @@ import com.zoonies.cinc.core.MeasuredEvent;
 import com.zoonies.cinc.core.MeasuredIntEvent;
 import com.zoonies.cinc.core.MeasuredStringEvent;
 import com.zoonies.cinc.core.StreamInfo;
-import com.zoonies.cinc.db.DatasetsDal;
+import com.zoonies.cinc.db.DataSetsDal;
 import com.zoonies.cinc.rx.IteratorOnSubscribe;
 
 /**
@@ -56,7 +56,7 @@ public class StreamsResource {
 
   @GET
   public Response getStreams() {
-    DatasetsDal dal = jdbi.onDemand(DatasetsDal.class);
+    DataSetsDal dal = jdbi.onDemand(DataSetsDal.class);
     ResultIterator<StreamInfo> streams = dal.getStreams();
     try {
       GenericEntity<List<StreamInfo>> entity =
@@ -70,7 +70,7 @@ public class StreamsResource {
   @GET
   @Path("{id}")
   public Response getRawData(@PathParam("id") String id) {
-    DatasetsDal dal = jdbi.onDemand(DatasetsDal.class);
+    DataSetsDal dal = jdbi.onDemand(DataSetsDal.class);
     Handle handle = jdbi.open();
     try {
       ResultIterator<MeasuredEvent<?>> results = getDataForStream(id, dal, handle);
@@ -89,7 +89,7 @@ public class StreamsResource {
    * @param handle
    * @return
    */
-  private ResultIterator<MeasuredEvent<?>> getDataForStream(String id, DatasetsDal dal,
+  private ResultIterator<MeasuredEvent<?>> getDataForStream(String id, DataSetsDal dal,
       Handle handle) {
     ResultIterator<StreamInfo> streamInfoItr = dal.getStreamInfo(id);
     try {

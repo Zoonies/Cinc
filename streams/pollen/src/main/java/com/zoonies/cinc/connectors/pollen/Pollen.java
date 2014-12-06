@@ -5,6 +5,7 @@ import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import java.sql.*;
 
 
 /*
@@ -16,16 +17,71 @@ import org.jsoup.select.Elements;
 public class Pollen {
 
     private static final String URL = "http://www.wunderground.com/DisplayPollen.asp?Zipcode=94402";
+    // JDBC driver name and database URL
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+    static final String DB_URL = "jdbc:mysql://HOST:3306/DATABASE";
 
+    //  Database credentials
+    static final String USER = "USER";
+    static final String PASS = "PASSWORD";
+   
 
     public static void main(String[] args) {
         System.out.println("Im the main method of the pollen scraper");
         try {
-            System.out.println(getRawPollenData());
+            insertData();
+            //System.out.println(getRawPollenData());
         } catch (Exception e) {
             System.out.println("Boo!");
         }
     }
+
+    public static void insertData() {
+      Connection conn = null;
+      Statement stmt = null;
+      try{
+         //STEP 2: Register JDBC driver
+         Class.forName("com.mysql.jdbc.Driver");
+
+         //STEP 3: Open a connection
+         System.out.println("Connecting to a selected database...");
+         conn = DriverManager.getConnection(DB_URL, USER, PASS);
+         System.out.println("Connected database successfully...");
+         
+         //STEP 4: Execute a query
+         System.out.println("Inserting records into the table...");
+         stmt = conn.createStatement();
+         
+         
+         String sql = " insert into pollen (measure, zip)"
+           + " values (0.4, 94115)";
+         stmt.executeUpdate(sql);
+         
+         System.out.println("Inserted records into the table...");
+
+      }catch(SQLException se){
+         //Handle errors for JDBC
+         se.printStackTrace();
+      }catch(Exception e){
+         //Handle errors for Class.forName
+         e.printStackTrace();
+      }finally{
+         //finally block used to close resources
+      try{
+         if(stmt!=null)
+            conn.close();
+      }catch(SQLException se){
+      }// do nothing
+      try{
+         if(conn!=null)
+            conn.close();
+      }catch(SQLException se){
+         se.printStackTrace();
+      }//end finally try
+      }//end try
+      System.out.println("Goodbye!");
+   
+   }//end main
 
     public static String getRawPollenData() throws Exception {
         String rawPollenData = "Im some data";

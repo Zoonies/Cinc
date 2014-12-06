@@ -4,7 +4,7 @@ apply plugin: 'application'
 apply plugin: 'eclipse'
 
 // The main class of the application
-mainClassName = 'com.zoonies.cinc.HelloWorldApplication'
+mainClassName = 'com.zoonies.cinc.CincApplication'
 
 // Add Gradle OneJar Plugin, see https://github.com/rholder/gradle-one-jar
 buildscript {
@@ -20,7 +20,7 @@ repositories { mavenCentral() }
 
 dependencies {
   compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
-  compile 'io.dropwizard:dropwizard-hibernate:' + dropwizardVersion
+  compile 'io.dropwizard:dropwizard-jdbi:' + dropwizardVersion
   compile 'io.dropwizard:dropwizard-migrations:' + dropwizardVersion
   compile 'io.dropwizard:dropwizard-auth:' + dropwizardVersion
   compile 'io.dropwizard:dropwizard-assets:' + dropwizardVersion
@@ -28,9 +28,10 @@ dependencies {
   compile 'io.dropwizard:dropwizard-views-freemarker:' + dropwizardVersion
   compile 'io.dropwizard:dropwizard-views-mustache:' + dropwizardVersion
   compile 'com.h2database:h2:1.3.168'
-  compile 'com.twilio.sdk:twilio-java-sdk:3.6.1'
   compile 'com.google.guava:guava:18.0'
   compile 'mysql:mysql-connector-java:5.1.6' 
+  compile 'io.reactivex:rxjava:1.0.1'
+  
   testCompile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
 }
 

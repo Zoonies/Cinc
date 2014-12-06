@@ -28,7 +28,7 @@ public class Pollen {
     }
 
     public static String getRawPollenData() throws Exception {
-        String rawPollenData = "";
+        String rawPollenData = "Im some data";
         try {
 
             Document doc = Jsoup.connect(URL).get();

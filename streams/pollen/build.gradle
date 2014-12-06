@@ -9,6 +9,7 @@
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'application'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -22,4 +23,15 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.5'
     compile 'org.jsoup:jsoup:1.8.1'
     testCompile 'junit:junit:4.11'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Pollen Stream',  
+            'Implementation-Version': '0.0.1',
+            'Main-Class': 'com.zoonies.cinc.connectors.pollen.Pollen'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

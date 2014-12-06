@@ -5,6 +5,7 @@
 package com.zoonies.cinc.db;
 
 import org.skife.jdbi.v2.ResultIterator;
+import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 
 import com.zoonies.cinc.core.StreamInfo;
@@ -17,6 +18,9 @@ public interface DatasetsDal {
 
   @SqlQuery("SELECT * FROM dev.streams")
   ResultIterator<StreamInfo> getStreams();
+  
+  @SqlQuery("SELECT * FROM dev.streams WHERE id = :id LIMIT 1")
+  ResultIterator<StreamInfo> getStreamInfo(@Bind("id") String id);
   
   void close();
 }

@@ -16,12 +16,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.zoonies.cinc.cli.RenderCommand;
 import com.zoonies.cinc.db.MeasuredDoubleEventMapper;
+import com.zoonies.cinc.db.MeasuredIntegerEventMapper;
+import com.zoonies.cinc.db.MeasuredStringEventMapper;
 import com.zoonies.cinc.db.StreamInfoMapper;
-import com.zoonies.cinc.resources.StreamsResource;
 import com.zoonies.cinc.resources.JodaDateTimeJsonDeserializer;
 import com.zoonies.cinc.resources.JodaDateTimeJsonSerializer;
 import com.zoonies.cinc.resources.PojoMessageBodyReader;
 import com.zoonies.cinc.resources.PojoMessageBodyWriter;
+import com.zoonies.cinc.resources.StreamsResource;
 import com.zoonies.cinc.resources.UsersResource;
 
 public class CincApplication extends Application<CincConfiguration> {
@@ -54,6 +56,8 @@ public class CincApplication extends Application<CincConfiguration> {
     final DBIFactory factory = new DBIFactory();
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "jdbiDb");
     jdbi.registerMapper(new MeasuredDoubleEventMapper());
+    jdbi.registerMapper(new MeasuredIntegerEventMapper());
+    jdbi.registerMapper(new MeasuredStringEventMapper());
     jdbi.registerMapper(new StreamInfoMapper());
     
     ObjectMapper objectMapper = new ObjectMapper();

@@ -4,8 +4,6 @@
  */
 package com.zoonies.cinc.core;
 
-import java.sql.SQLOutput;
-
 import org.joda.time.DateTime;
 
 /**

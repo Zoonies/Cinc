@@ -9,24 +9,20 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
-import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.zoonies.cinc.cli.RenderCommand;
-import com.zoonies.cinc.core.MeasuredDoubleEvent;
-import com.zoonies.cinc.resources.ApiResource;
+import com.zoonies.cinc.db.MeasuredDoubleEventMapper;
+import com.zoonies.cinc.db.StreamInfoMapper;
+import com.zoonies.cinc.resources.StreamsResource;
 import com.zoonies.cinc.resources.JodaDateTimeJsonDeserializer;
 import com.zoonies.cinc.resources.JodaDateTimeJsonSerializer;
 import com.zoonies.cinc.resources.PojoMessageBodyReader;
 import com.zoonies.cinc.resources.PojoMessageBodyWriter;
+import com.zoonies.cinc.resources.UsersResource;
 
 public class CincApplication extends Application<CincConfiguration> {
   public static void main(String[] args) throws Exception {
@@ -57,16 +53,8 @@ public class CincApplication extends Application<CincConfiguration> {
       throws ClassNotFoundException {
     final DBIFactory factory = new DBIFactory();
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "jdbiDb");
-    jdbi.registerMapper(new ResultSetMapper<MeasuredDoubleEvent>() {
-      @Override
-      public MeasuredDoubleEvent map(int index, ResultSet r, StatementContext ctx)
-          throws SQLException {
-        Date date = r.getDate("dateTime");
-        DateTime realDate = new DateTime(date.getTime());
-        double measure = r.getDouble("measure");
-        return new MeasuredDoubleEvent(realDate, measure);
-      }
-    });
+    jdbi.registerMapper(new MeasuredDoubleEventMapper());
+    jdbi.registerMapper(new StreamInfoMapper());
     
     ObjectMapper objectMapper = new ObjectMapper();
     SimpleModule simpleModule = new SimpleModule();
@@ -74,7 +62,8 @@ public class CincApplication extends Application<CincConfiguration> {
     simpleModule.addDeserializer(DateTime.class, new JodaDateTimeJsonDeserializer());
     objectMapper.registerModule(simpleModule);
     
-    environment.jersey().register(new ApiResource(jdbi));
+    environment.jersey().register(new UsersResource(jdbi));
+    environment.jersey().register(new StreamsResource(jdbi));
     environment.jersey().register(new PojoMessageBodyWriter(objectMapper));
     environment.jersey().register(new PojoMessageBodyReader(objectMapper));
   }

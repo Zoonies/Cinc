@@ -4,21 +4,19 @@
  */
 package com.zoonies.cinc.db;
 
-import java.util.Iterator;
-
-import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.ResultIterator;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 
-import com.zoonies.cinc.core.MeasuredDoubleEvent;
+import com.zoonies.cinc.core.StreamInfo;
 
 /**
  * @author <a href="mailto:pauld@birst.com">Patrick Auld</a>
  * Dec 6, 2014
  */
-public interface DataSetsDal {
+public interface DatasetsDal {
 
-  @SqlQuery("SELECT dataTime, measure FROM :tableName")
-  Iterator<MeasuredDoubleEvent> getDoubleData(@Bind("tableName") String tableName);
+  @SqlQuery("SELECT * FROM dev.streams")
+  ResultIterator<StreamInfo> getStreams();
   
   void close();
 }

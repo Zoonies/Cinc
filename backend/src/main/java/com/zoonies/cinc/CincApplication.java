@@ -55,6 +55,7 @@ public class CincApplication extends Application<CincConfiguration> {
       throws ClassNotFoundException {
     final DBIFactory factory = new DBIFactory();
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "jdbiDb");
+    
     jdbi.registerMapper(new MeasuredDoubleEventMapper());
     jdbi.registerMapper(new MeasuredIntegerEventMapper());
     jdbi.registerMapper(new MeasuredStringEventMapper());
@@ -66,7 +67,9 @@ public class CincApplication extends Application<CincConfiguration> {
     simpleModule.addDeserializer(DateTime.class, new JodaDateTimeJsonDeserializer());
     objectMapper.registerModule(simpleModule);
     
-    environment.jersey().setUrlPattern("/api/");
+    environment.jersey().setUrlPattern("/api/*");
+    //Serving assets at host:8080 doesn't work without this
+    
     environment.jersey().register(new UsersResource(jdbi));
     environment.jersey().register(new StreamsResource(jdbi));
     environment.jersey().register(new PojoMessageBodyWriter(objectMapper));

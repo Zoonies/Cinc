@@ -17,10 +17,22 @@ var loadHomePageContent = function(){
         //User has been here before so load survey
         $('#home-container').load('./subpages/survey.html', function(){
             $(".happyness").click(function(){
-                var happyValue = $(this).data("happy-value");
+                var happyValue = $(this).data("happyvalue");
                 //
-                // SUBMIT HAPPYNESS VALUE TO THE CLOUD
+                //SUBMIT HAPPYNESS VALUE TO THE CLOUD
                 //
+                var data = {"happiness": happyValue};
+                $.ajax({
+                    url: '/api/user/happiness?t='+uid,
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    type: 'POST',
+                    accepts: 'application/json',
+                    success: function(response) {
+                      alert("Success");
+                 }
+                });
                 window.location = "chart.html";
             });
         });

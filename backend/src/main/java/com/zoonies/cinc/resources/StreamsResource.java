@@ -36,6 +36,7 @@ import com.zoonies.cinc.rx.IteratorOnSubscribe;
  * @author <a href="mailto:pauld@birst.com">Patrick Auld</a>
  * Dec 6, 2014
  */
+//@Path("/api/streams") /api/ set in the CincApplication 
 @Path("/api/streams")
 public class StreamsResource {
 

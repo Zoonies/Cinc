@@ -1,25 +1,47 @@
 //Check and see what content to load in the home page
 //If they are new user -- signup
 //Registered user -- survey
-
+var cName = 'uid';
+var uid;
+var loadHomePageContent = function(){
+    uid = $.cookie(cName); //Get user id from cookie
+    var qs = $.qs('uid'); //OR get from URL
+    if( qs !== null)
+        uid = qs;
+    
+    //Store the user id as a cookie
+    $.cookie(cName, uid, { expires: 1000, path: '/' });
+    
+    if( typeof(uid) != "undefined")
+    {
+        //User has been here before so load survey
+        $('#home-container').load('./subpages/survey.html', function(){
+            $(".happyness").click(function(){
+                var happyValue = $(this).data("happy-value");
+                //
+                // SUBMIT HAPPYNESS VALUE TO THE CLOUD
+                //
+                window.location = "chart.html";
+            });
+        });
+    }
+    else
+    {
+        $('#home-container').load('./subpages/signup.html', function(){
+            $('#mobile-number').mask("(999)999-9999");
+            $('#sign-up').click(function (e) {
+                var number = $('#mobile-number').val();
+               
+                // 
+                // TEXT MESSAGE CODE GOES HERE
+                //
+                
+                $('#home-container').load('./subpages/messageSent.html');
+            });
+        });
+    }
+}
 $(document).ready(function(){
-    //TO DO: ADD COOKIE LOGIC
-   $('#home-container').load('/subpages/survey.html', function(){
-       
-       
-   });
-    // $('#home-container').load('/subpages/signup.html', function(){
-    //     $('#mobile-number').mask("(999) 999-9999");
-    //     $('#sign-up').click(function (e) {
-    //         var number = $('#mobile-number').val();
-    //         console.log(number);
-    //         // 
-    //         // TEXT MESSAGE CODE GOES HERE
-    //         //
-            
-    //         $('#home-container').load('/subpages/messageSent.html');
-    //     });
-    // });
-
+    loadHomePageContent();
 });
 

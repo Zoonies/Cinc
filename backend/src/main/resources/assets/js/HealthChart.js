@@ -62,6 +62,7 @@ var healthChartConfig = {
 
 var getChartData = function()
 {
+
     //Settings
     var numberOfHistoricalDays = healthChartConfig.days;
     
@@ -126,7 +127,18 @@ var updateChart = function()
     healthChartConfig.myChart = new Chart(healthChartConfig.ctx).Line(data, options);
 }
 
+var populateInitialChart = function()
+{
+    var data = getChartData();
+    var options = Chart.defaults.global;
+    healthChartConfig.myChart= new Chart(healthChartConfig.ctx).Line(data, options);
+}
+
 $(document).ready(function () {
+    //
+    // PULL DATA FROM SERVER
+    //
+    
     // Get context with jQuery - using jQuery's .get() method.
     var ctx = $("#myChart").get(0).getContext("2d");
     var canvas = $("#myChart").get(0);
@@ -136,10 +148,10 @@ $(document).ready(function () {
     healthChartConfig.ctx =  ctx;
     healthChartConfig.myChart = myNewChart;
     healthChartConfig.canvas = canvas;
-
-    var data = getChartData();
     
-    //Chart
-    var options = Chart.defaults.global;
-    healthChartConfig.myChart= new Chart(healthChartConfig.ctx).Line(data, options);
+    //
+    // ON DATA PULL COMPLETE
+    //
+    populateInitialChart();
+
 });

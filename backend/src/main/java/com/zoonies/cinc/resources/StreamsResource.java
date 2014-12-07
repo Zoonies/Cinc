@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -37,7 +38,7 @@ import com.zoonies.cinc.rx.IteratorOnSubscribe;
  * Dec 6, 2014
  */
 //@Path("/api/streams") /api/ set in the CincApplication 
-@Path("/api/streams")
+@Path("/streams")
 public class StreamsResource {
 
   final static Logger logger = Logger.getLogger(StreamsResource.class.getCanonicalName());
@@ -84,6 +85,22 @@ public class StreamsResource {
     }
   }
 
+  // @GET
+  // @Path("user/happiness")
+  // public Response getRawData(@QueryParam("t") Integer id) {
+  //   DataSetsDal dal = jdbi.onDemand(DataSetsDal.class);
+  //   Handle handle = jdbi.open();
+  //   try {
+  //     ResultIterator<MeasuredEvent<?>> results = getDataForStreamWithUser("happiness", id, dal, handle);
+  //     Iterable<List<Object>> iterable =
+  //         Observable.create(new IteratorOnSubscribe<MeasuredEvent<?>>(results))
+  //             .map(new MeasureToArray()).toBlocking().toIterable();
+  //     return Response.ok(iterable).build();
+  //   } finally {
+  //     handle.close();
+  //   }
+  // }
+
   /**
    * @param id
    * @param dal
@@ -101,6 +118,30 @@ public class StreamsResource {
       // Yay SQL injections!
       Query<Map<String, Object>> query =
           handle.createQuery("SELECT dateTime, measure FROM dev.stream_" + id);
+      ResultIterator<MeasuredEvent<?>> results = mapStreamMeasureType(stream, query);
+      return results;
+    } finally {
+      streamInfoItr.close();
+    }
+  }
+
+  /**
+   * @param id
+   * @param dal
+   * @param handle
+   * @return
+   */
+  private ResultIterator<MeasuredEvent<?>> getDataForStreamWithUser(String id, Integer userId, DataSetsDal dal,
+      Handle handle) {
+    ResultIterator<StreamInfo> streamInfoItr = dal.getStreamInfo(id);
+    try {
+      if (!streamInfoItr.hasNext()) {
+        throw new WebApplicationException(404);
+      }
+      StreamInfo stream = streamInfoItr.next();
+      // Yay SQL injections!
+      Query<Map<String, Object>> query =
+          handle.createQuery("SELECT dateTime, measure FROM dev."+id+" where dev."+id+".userId = "+userId);
       ResultIterator<MeasuredEvent<?>> results = mapStreamMeasureType(stream, query);
       return results;
     } finally {

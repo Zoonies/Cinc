@@ -34,8 +34,6 @@ public class UsersResource {
       HappinessUpdateRequest request) {
     Handle handle = jdbi.open();
     try {
-      System.out.printf("-----------Integer : %d\n",id);
-
       handle.update("insert into happiness (userId, measure, zip) values (?, ?, 0)", id, request.getHappiness());
       return Response.noContent().build();
     } finally {

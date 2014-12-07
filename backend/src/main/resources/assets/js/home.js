@@ -27,7 +27,6 @@ var loadHomePageContent = function(){
                     type: "POST",
                     data: JSON.stringify(data),
                     contentType: "application/json",
-                    type: 'POST',
                     accepts: 'application/json',
                     success: function(response) {
                       alert("Success");

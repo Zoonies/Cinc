@@ -39,7 +39,7 @@ public class CincApplication extends Application<CincConfiguration> {
   @Override
   public void initialize(Bootstrap<CincConfiguration> bootstrap) {
     bootstrap.addCommand(new RenderCommand());
-    bootstrap.addBundle(new AssetsBundle());
+    bootstrap.addBundle(new AssetsBundle("/assets", "/", "index.html"));
     bootstrap.addBundle(new MigrationsBundle<CincConfiguration>() {
       @Override
       public DataSourceFactory getDataSourceFactory(CincConfiguration configuration) {
@@ -66,6 +66,7 @@ public class CincApplication extends Application<CincConfiguration> {
     simpleModule.addDeserializer(DateTime.class, new JodaDateTimeJsonDeserializer());
     objectMapper.registerModule(simpleModule);
     
+    environment.jersey().setUrlPattern("/api/");
     environment.jersey().register(new UsersResource(jdbi));
     environment.jersey().register(new StreamsResource(jdbi));
     environment.jersey().register(new PojoMessageBodyWriter(objectMapper));

@@ -117,18 +117,28 @@ public class StreamsResource {
       Query<Map<String, Object>> query) {
     ResultIterator<MeasuredEvent<?>> results;
     switch (stream.getMeasureType()) {
-      case INTEGER: {
+      /*case INTEGER: {
         Query<MeasuredEvent<?>> mapped = (Query) query.mapTo(MeasuredIntEvent.class);
         results = mapped.iterator();
         break;
       }
-      case DOUBLE: {
+      case DOUBLE: 
+      case FLOAT: { 
         Query<MeasuredEvent<?>> mapped = (Query) query.mapTo(MeasuredDoubleEvent.class);
         results = mapped.iterator();
         break;
       }
       case STRING: {
         Query<MeasuredEvent<?>> mapped = (Query) query.mapTo(MeasuredStringEvent.class);
+        results = mapped.iterator();
+        break;
+      }*/
+      //PTK Adding FLOAT; Same code called in all cases, is there a need to repeat it for each case?
+      case INTEGER:
+      case DOUBLE: 
+      case FLOAT:
+      case STRING: {
+        Query<MeasuredEvent<?>> mapped = (Query) query.mapTo(MeasuredIntEvent.class);
         results = mapped.iterator();
         break;
       }

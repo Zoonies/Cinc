@@ -11,5 +11,6 @@ package com.zoonies.cinc.core;
 public enum MeasureType {
   INTEGER,
   DOUBLE,
-  STRING;
+  STRING,
+  FLOAT;//PTK Adding Float data type
 }

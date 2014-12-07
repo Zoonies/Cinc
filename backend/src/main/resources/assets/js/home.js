@@ -42,7 +42,10 @@ var loadHomePageContent = function(){
             $('#mobile-number').mask("(999)999-9999");
             $('#sign-up').click(function (e) {
                 var number = $('#mobile-number').val();
-               
+                //TO DO 
+                //Add phone number validation
+                //
+                
                 // 
                 // TEXT MESSAGE CODE GOES HERE
                 //

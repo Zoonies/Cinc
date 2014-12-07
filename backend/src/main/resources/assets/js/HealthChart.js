@@ -6,6 +6,7 @@ var healthChartConfig = {
     "datasets" : ["happiness", "pollen"]
 }
 var healthData = {
+    "setsStillLoading": 3
     //"happiness": [2,3,5,3.etc],
     //"pollen": [34.23,43,etc]
 }
@@ -72,6 +73,18 @@ var getDataPoint = function(setName, date)
         return point;
 }
 
+var parseDateString = function(fullSet)
+{
+    //Recieving from the server: 2014-12-06T08:00:00.000Z
+    //Parsing into client format: 12/6/2014
+    for( var i=0; i< fullSet.length; i++)
+    {
+        var serverDate = fullSet[i][0]; //This assumes the date is the first item.
+        var temp = new Date(serverDate);
+        var clientDate =  dateToString(temp);
+        fullSet[i][0] = clientDate;
+    }
+}
 
 
 var getChartData = function()
@@ -155,9 +168,18 @@ $(document).ready(function () {
     
     //
     // CALL ON DATA PULL COMPLETE (FOR ALL SETS)
-    populateInitialChart();
+    // Because the ajax pulls are async we'll want to call this a different way (once they are all done loading)
+    //populateInitialChart(); //Moved to "setDoneLoading"
     //
 });
+
+// Because the ajax pulls are async we wait tillthey are all done loading to draw the chart
+var setDoneLoading = function(setName)
+{
+    healthData.setsStillLoading--;
+    if ( healthData.setsStillLoading === 0)
+        populateInitialChart();
+}
 
 var pullDataSets = function()
 {
@@ -166,15 +188,19 @@ var pullDataSets = function()
     
    //Test-Fake-Sample Data
    // 
-   //      $.ajax({
-   //          url: '/api/streams/happiness',
-   //          type: "GET",
-   //          contentType: "application/json",
-   //          accepts: 'application/json',
-   //          success: function(response) {
-   //            var happinessRawData = response;
-   //       }
-   //      });
+        //  $.ajax({
+        //      url: '/api/streams/happiness',
+        //      type: "GET",
+        //      contentType: "application/json",
+        //      accepts: 'application/json',
+        //      success: function(response) {
+        //         healthData.happiness = parseDateString(response);
+        //         setDoneLoading("happiness");
+        //     },
+        //      error: function(response) {
+        //         setDoneLoading("happiness");
+        //      }
+        //  });
     var happinessRawData = {
         "11/14/2014" : 1,
         "11/15/2014" : 4,
@@ -207,8 +233,12 @@ var pullDataSets = function()
         contentType: "application/text",
         accepts: 'application/json',
         success: function(response) {
-            pollenRawData = response;
-     }
+            healthData.pollen = parseDateString(response);
+            setDoneLoading("pollen");
+        },
+         error: function(response) {
+            setDoneLoading("pollen");
+         }
     });
     
     // var pollenRawData = {
@@ -262,7 +292,9 @@ var pullDataSets = function()
         "12/6/2014" : 11
     };
     
-    healthData.happiness = happinessRawData;
-    healthData.pollen =  pollenRawData;
+    healthData.happiness = happinessRawData; 
+    setDoneLoading("happiness");
+   // healthData.pollen =  pollenRawData;
     healthData.crime =  crimeRawData;
+    setDoneLoading("crime");
 }

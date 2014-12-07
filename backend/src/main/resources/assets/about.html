@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Happiness</title>
+<title>About The Project</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <!-- Load CSS -->
@@ -30,36 +30,48 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="./">Home</a></li>
-            <li class="active"><a href="chart.html">Chart</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="chart.html">Chart</a></li>
+            <li class="active"><a href="about.html">About</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
+    <br><br>
     <div class="container">
-    <!-- buttons -->
-    
-        <div class="btn-group btn-group-sm range-group" role="group" aria-label="...">
-            <h5>Range</h5>
-            <button type="button" class="btn range active" data-range="7">7 Days</button>
-            <button type="button" class="btn btn-default range" data-range="14">14 Days</button>
-            <button type="button" class="btn btn-default range" data-range="21">21 Days</button>
-        </div>
-        
-        <div class="btn-group btn-group-sm" role="group" aria-label="...">
-            <h5>Data</h5>
-            <button type="button" class="btn btn-default dataset" data-set-name="happiness">Happiness</button>
-            <button type="button" class="btn btn-default dataset" data-set-name="pollen">Pollen</button>
-            <button type="button" class="btn btn-default dataset" data-set-name="crime">Crime</button>
-        </div>
-    </div>
-    <div class="container">
-
-
-        <canvas id="myChart" width="400" height="200"></canvas>
-
-
+        <div class="jumbotron">
+        <h2>About Cinc</h2>
+        <p>Cinc was created in 48 hours for Koding.com 2014 global hackathon</p>
+        <p>__Information about Cinc and it's visions__</p>
+        <p>
+          <a class="btn btn-med btn-primary" href="https://github.com/Zoonies/Cinc" role="button">Github »</a>
+        </p>
+      </div>
+      
+      <div class="jumbotron">
+        <h2>Team</h2>
+        <div class="row">
+            <div class="col-md-2">
+              <h3>Patrick Auld</h3>
+              <p>Back End / API</p>
+            </div>
+            <div class="col-md-2">
+              <h3>Thomas Boyles</h3>
+              <p>Back End / API</p>
+           </div>
+            <div class="col-md-2">
+              <h3>Margeaux Bucher</h3>
+              <p>Vision / Projet Manager</p>
+            </div>
+            <div class="col-md-2">
+              <h3>Pam Kinnaird</h3>
+              <p>Back End / API</p>
+            </div>
+            <div class="col-md-2">
+              <h3>Raymond Piccolotti</h3>
+              <p>Front End</p>
+            </div>
+          </div>
+      </div>
     </div><!-- /.container -->
 
   
@@ -68,12 +80,7 @@
   
    <!-- Load core JavaScript -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="js/jquery.cookie.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script src="js/Chart.js"></script>
-<script src="js/helpers.js"></script>
-<script src="js/HealthChart.js"></script>
-<script src="js/listeners.js"></script>
 </body>
 </html>
 

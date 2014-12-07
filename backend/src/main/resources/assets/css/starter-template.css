@@ -10,3 +10,8 @@ body {
     font-weight:bold;
 	background-color: #0ac2d2;
 }
+
+canvas{
+        width: 100% !important;
+        height: auto !important;
+}

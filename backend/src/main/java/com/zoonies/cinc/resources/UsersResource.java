@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2014 Birst, Inc. All rights reserved. BIRST PROPRIETARY/CONFIDENTIAL. Use is
+ * Copyright (C) 2007-2014 Zoonies All rights reserved. ZOONIES PROPRIETARY/CONFIDENTIAL. Use is
  * subject to license terms.
  */
 package com.zoonies.cinc.resources;

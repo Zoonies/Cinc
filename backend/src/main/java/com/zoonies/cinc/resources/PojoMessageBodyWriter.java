@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2007-2014 Birst, Inc. All rights reserved. 
- * BIRST PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright (C) 2007-2014 Zoonies All rights reserved. 
+ * ZOONIES PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.zoonies.cinc.resources;
 
@@ -19,7 +19,7 @@ import javax.ws.rs.ext.Provider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * @author <a href="mailto:pauld@birst.com">Patrick Auld</a>
+ * @author <a href="mailto:patrick@patrickauld.com">Patrick Auld</a>
  * Dec 6, 2014
  */
 @Provider

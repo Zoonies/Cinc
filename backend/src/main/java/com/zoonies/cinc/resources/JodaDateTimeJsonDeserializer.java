@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
 /**
- * @author <a href="mailto:pauld@birst.com">Patrick Auld</a>
+ * @author <a href="mailto:patrick@patrickauld.com">Patrick Auld</a>
  * Jul 24, 2014
  */
 public final class JodaDateTimeJsonDeserializer extends JsonDeserializer<DateTime> {

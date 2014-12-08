@@ -4,7 +4,8 @@
 var cName = 'uid';
 var uid;
 var loadHomePageContent = function(){
-    uid = $.cookie(cName); //Get user id from cookie
+    if( $.cookie(cName) != "undefined")
+        uid = $.cookie(cName); //Get user id from cookie
     var qs = $.qs('uid'); //OR get from URL
     if( qs !== null)
         uid = qs;
@@ -12,7 +13,7 @@ var loadHomePageContent = function(){
     //Store the user id as a cookie
     $.cookie(cName, uid, { expires: 1000, path: '/' });
     
-    if( typeof(uid) != "undefined")
+    if( typeof(uid) !== "undefined")
     {
         //User has been here before so load survey
         $('#home-container').load('./subpages/survey.html', function(){
@@ -45,7 +46,11 @@ var loadHomePageContent = function(){
                 //TO DO 
                 //Add phone number validation
                 //
-                
+                number = validateAndTrimPhoneNumber(number);
+                if( number == -1){
+                    $("#invalid-number").show();
+                    return;
+                }
                 // 
                 // TEXT MESSAGE CODE GOES HERE
                 //
@@ -58,4 +63,16 @@ var loadHomePageContent = function(){
 $(document).ready(function(){
     loadHomePageContent();
 });
+
+var validateAndTrimPhoneNumber = function(number)
+{
+    number = number.replace(/\(/g, '');
+    number = number.replace(/\)/g, '');
+    number = number.replace(/\-/g, '');
+    number = number.replace(/ /g, '');
+    if( $.isNumeric(number) === false || number.length != 10)
+        return -1
+    else
+        return number;
+}
 

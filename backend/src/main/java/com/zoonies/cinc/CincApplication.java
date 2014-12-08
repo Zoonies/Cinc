@@ -9,6 +9,15 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
 
@@ -55,21 +64,21 @@ public class CincApplication extends Application<CincConfiguration> {
       throws ClassNotFoundException {
     final DBIFactory factory = new DBIFactory();
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "jdbiDb");
-    
+
     jdbi.registerMapper(new MeasuredDoubleEventMapper());
     jdbi.registerMapper(new MeasuredIntegerEventMapper());
     jdbi.registerMapper(new MeasuredStringEventMapper());
     jdbi.registerMapper(new StreamInfoMapper());
-    
+
     ObjectMapper objectMapper = new ObjectMapper();
     SimpleModule simpleModule = new SimpleModule();
     simpleModule.addSerializer(DateTime.class, new JodaDateTimeJsonSerializer());
     simpleModule.addDeserializer(DateTime.class, new JodaDateTimeJsonDeserializer());
     objectMapper.registerModule(simpleModule);
-    
+
     environment.jersey().setUrlPattern("/api/*");
-    //Serving assets at host:8080 doesn't work without this
-    
+    // Serving assets at host:8080 doesn't work without this
+
     environment.jersey().register(new UsersResource(jdbi));
     environment.jersey().register(new StreamsResource(jdbi));
     environment.jersey().register(new PojoMessageBodyWriter(objectMapper));

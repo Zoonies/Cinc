@@ -18,9 +18,10 @@ import org.slf4j.LoggerFactory;
 
 public class SendSms {
 
-    private static final String ACCOUNT_SID = "...";
-    private static final String AUTH_TOKEN = "...";
-    private static final String FROM_NUMBER = "...";
+  private static final String ACCOUNT_SID = "AC9dcc07b4bd83f8a6831a885bfeb3d03b";
+  private static final String AUTH_TOKEN = "de23e780064d91682171fd4fdb52d422";
+  private static final String FROM_NUMBER = "4154032853";
+  
     final static Logger logger = LoggerFactory.getLogger(SendSms.class);
 
     public SendSms() {

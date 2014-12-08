@@ -4,6 +4,7 @@
  */
 package com.zoonies.cinc.resources;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -11,13 +12,11 @@ import java.util.logging.Logger;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
-
 
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
@@ -40,7 +39,6 @@ import com.zoonies.cinc.rx.IteratorOnSubscribe;
  * @author <a href="mailto:pauld@birst.com">Patrick Auld</a>
  * Dec 6, 2014
  */
-//@Path("/api/streams") /api/ set in the CincApplication 
 @Path("/streams")
 public class StreamsResource {
 
@@ -60,6 +58,7 @@ public class StreamsResource {
   }
 
   @GET
+  @Produces(MediaType.APPLICATION_JSON)
   public Response getStreams() {
     DataSetsDal dal = jdbi.onDemand(DataSetsDal.class);
     ResultIterator<StreamInfo> streams = dal.getStreams();
@@ -74,7 +73,8 @@ public class StreamsResource {
 
   @GET
   @Path("{id}")
-  public Response getRawData(@PathParam("id") String id, @Context UriInfo info) {
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getRawData(@PathParam("id") String id) {
     DataSetsDal dal = jdbi.onDemand(DataSetsDal.class);
     Handle handle = jdbi.open();
     try {
@@ -82,7 +82,8 @@ public class StreamsResource {
       Iterable<List<Object>> iterable =
           Observable.create(new IteratorOnSubscribe<MeasuredEvent<?>>(results))
               .map(new MeasureToArray()).toBlocking().toIterable();
-      return Response.ok(iterable).build();
+      ArrayList<List<Object>> list = Lists.newArrayList(iterable);
+      return Response.ok(list).build();
     } finally {
       handle.close();
     }

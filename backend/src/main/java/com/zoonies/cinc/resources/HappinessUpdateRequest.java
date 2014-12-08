@@ -10,13 +10,13 @@ package com.zoonies.cinc.resources;
  */
 public class HappinessUpdateRequest {
 
-  private int happiness;
+    private int happiness;
 
-  public int getHappiness() {
-    return happiness;
-  }
+    public int getHappiness() {
+        return happiness;
+    }
 
-  public void setHappiness(int happiness) {
-    this.happiness = happiness;
-  }
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
+    }
 }

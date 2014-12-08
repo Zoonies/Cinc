@@ -33,6 +33,6 @@ task fatJar(type: Jar) {
             'Main-Class': 'com.zoonies.cinc.connectors.pollen.Pollen'
     }
     baseName = project.name
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from { configurations.compile.co1llect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }

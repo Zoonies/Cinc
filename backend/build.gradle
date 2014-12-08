@@ -31,6 +31,7 @@ dependencies {
   compile 'com.google.guava:guava:18.0'
   compile 'mysql:mysql-connector-java:5.1.6' 
   compile 'io.reactivex:rxjava:1.0.1'
+  compile 'com.twilio.sdk:twilio-java-sdk:3.4.5'
   
   testCompile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
 }

@@ -5,13 +5,13 @@ database:
   driverClass: com.mysql.jdbc.Driver
 
   # the username
-  user: admin
+  user: ...
 
   # the password
-  password: pw
+  password: ...
 
   # the JDBC URL
-  url: jdbc:mysql://HOST:3306/DB
+  url: jdbc:mysql://...
 
   validationQuery: "/* MyApplication Health Check */ SELECT 1"
 

@@ -12,32 +12,54 @@ import javax.ws.rs.core.Response;
 
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
+import com.zoonies.cinc.core.SendSms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * @author <a href="mailto:pauld@birst.com">Patrick Auld</a>
+ * @author <a href="mailto:patrick@patrickauld.com">Patrick Auld</a>
  * Dec 6, 2014
  */
+
 //@Path("/api/user") /api/ set in the CincApplication 
 @Path("/user")
 public class UsersResource {
 
-  private final DBI jdbi;
+    final static Logger logger = LoggerFactory.getLogger(UsersResource.class);
+    private final DBI jdbi;
 
-  public UsersResource(DBI jdbi) {
-    super();
-    this.jdbi = jdbi;
-  }
-  
-  @POST
-  @Path("happiness")
-  public Response updateUserHappiness(@QueryParam("t") Integer id,  
-      HappinessUpdateRequest request) {
-    Handle handle = jdbi.open();
-    try {
-      handle.update("insert into happiness (userId, measure, zip) values (?, ?, 0)", id, request.getHappiness());
-      return Response.noContent().build();
-    } finally {
-      handle.close();
+    public UsersResource(DBI jdbi) {
+        super();
+        this.jdbi = jdbi;
     }
-  }
+  
+    @POST
+    @Path("happiness")
+    public Response updateUserHappiness(@QueryParam("t") Integer id, HappinessUpdateRequest request) {
+        Handle handle = jdbi.open();
+        try {
+            handle.update("insert into happiness (userId, measure, zip) values (?, ?, 0)", id, request.getHappiness());
+            return Response.noContent().build();
+        } finally {
+            handle.close();
+        }
+    }
+
+    @POST
+    @Path("signup")
+    public Response createUserRecord(@QueryParam("n") Integer id) {
+        logger.info("Creating user record for id " + String.valueOf(id));
+        Handle handle = jdbi.open();
+        try {
+            handle.update("insert into users (userId) values (0)", id);
+            SendSms sms = new SendSms();
+            sms.sendSms(id.toString());
+        } catch (Exception e) {
+            logger.error("Error encountered while attempting signup", e.toString());
+        } finally {
+            handle.close();
+        }
+        return Response.noContent().build();
+    }
+
 }

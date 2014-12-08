@@ -15,6 +15,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+
 
 import org.skife.jdbi.v2.DBI;
 import org.skife.jdbi.v2.Handle;
@@ -71,7 +74,7 @@ public class StreamsResource {
 
   @GET
   @Path("{id}")
-  public Response getRawData(@PathParam("id") String id) {
+  public Response getRawData(@PathParam("id") String id, @Context UriInfo info) {
     DataSetsDal dal = jdbi.onDemand(DataSetsDal.class);
     Handle handle = jdbi.open();
     try {
